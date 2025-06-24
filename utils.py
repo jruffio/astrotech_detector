@@ -66,7 +66,7 @@ def acquire_images(tint, Ncoadd, outdir=None,prefix="image"):
     node = PySpin.CFloatPtr(nodemap.GetNode("DeviceTemperature"))
     if PySpin.IsAvailable(node) and PySpin.IsReadable(node):
         temperature = node.GetValue()
-        print(f"Camera temperature: {temperature:.2f} °C")
+        # print(f"Camera temperature: {temperature:.2f} °C")
     else:
         temperature = None
         print("DeviceTemperature node not available or not readable on this camera.")
@@ -95,7 +95,9 @@ def acquire_images(tint, Ncoadd, outdir=None,prefix="image"):
     system.ReleaseInstance()
     if not images:
         raise RuntimeError("No complete images acquired.")
+    
     stack = np.stack(images, axis=0)
+
     # Save stack and mean image as FITS extensions if requested
     if outdir is not None:
         os.makedirs(outdir, exist_ok=True)
